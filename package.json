@@ -1,0 +1,35 @@
+{
+  "name": "vue2-auth",
+  "version": "0.1.0",
+  "description": "Authentication using VueJS 2.0, Express, and Passport",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "serve": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/searsaw/vue2-auth.git"
+  },
+  "keywords": [],
+  "author": "Alex Sears <alexwsears@gmail.com> (http://alexsears.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/searsaw/vue2-auth/issues"
+  },
+  "homepage": "https://github.com/searsaw/vue2-auth#readme",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "jsonwebtoken": "^7.0.0",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.0.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^2.11.1",
+    "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-plugin-import": "^1.8.1",
+    "nodemon": "^1.9.2"
+  }
+}
