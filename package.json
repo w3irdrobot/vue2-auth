@@ -22,9 +22,11 @@
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
     "jsonwebtoken": "^7.0.0",
+    "node-uuid": "^1.4.7",
     "passport": "^0.3.2",
     "passport-jwt": "^2.0.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "pug": "^2.0.0-beta3"
   },
   "devDependencies": {
     "eslint": "^2.11.1",
