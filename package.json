@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "serve": "nodemon server.js"
+    "serve": "nodemon server.js",
+    "build:js": "browserify src/app.js -t vueify -t babelify -o public/app.bundle.js",
+    "watch:js": "watchify src/app.js -t vueify -t babelify -o public/app.bundle.js"
   },
   "repository": {
     "type": "git",
@@ -21,17 +23,25 @@
   "dependencies": {
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "flash": "^1.1.0",
     "jsonwebtoken": "^7.0.0",
     "node-uuid": "^1.4.7",
     "passport": "^0.3.2",
-    "passport-jwt": "^2.0.0",
     "passport-local": "^1.0.0",
-    "pug": "^2.0.0-beta3"
+    "pug": "^2.0.0-beta3",
+    "vue": "^2.0.0-alpha.6"
   },
   "devDependencies": {
+    "babel-core": "^6.10.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
     "eslint": "^2.11.1",
     "eslint-config-airbnb-base": "^3.0.1",
     "eslint-plugin-import": "^1.8.1",
-    "nodemon": "^1.9.2"
+    "nodemon": "^1.9.2",
+    "vueify": "^8.5.4",
+    "watchify": "^3.7.0"
   }
 }

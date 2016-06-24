@@ -1,12 +1,10 @@
 // Import needed modules
 const express = require('express');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+const flash = require('flash');
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
-const PassportJwt = require('passport-jwt');
-const jwt = require('jsonwebtoken');
-const JwtStrategy = PassportJwt.Strategy;
-const ExtractJwt = PassportJwt.ExtractJwt;
+const LocalStrategy = require('passport-local');;
 const uuid = require('node-uuid');
 const appData = require('./data.json');
 
@@ -21,7 +19,7 @@ const exclamationData = appData.exclamations;
 
 function getUser(username) {
   const user = userData.find(u => u.username === username);
-  return Object.assign(user);
+  return Object.assign({}, user);
 }
 
 // Create default port
@@ -32,8 +30,18 @@ const server = express();
 
 // Configure server
 server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(session({
+  secret: process.env.SESSION_SECRET || 'awesomecookiesecret',
+  resave: false,
+  saveUninitialized: false,
+}));
+server.use(flash());
 server.use(express.static('public'));
 server.use(passport.initialize());
+server.use(passport.session());
+server.set('views', './views');
+server.set('view engine', 'pug');
 
 // Configure Passport
 passport.use(new LocalStrategy(
@@ -41,7 +49,7 @@ passport.use(new LocalStrategy(
     const user = getUser(username);
 
     if (!user || user.password !== password) {
-      return done('Username and password combination is wrong');
+      return done(null, false, { message: 'Username and password combination is wrong' });
     }
 
     delete user.password;
@@ -50,55 +58,65 @@ passport.use(new LocalStrategy(
   }
 ));
 
-passport.use(new JwtStrategy(
-  {
-    secretOrKey: JWT_KEY,
-    issuer: JWT_ISSUER,
-    jwtFromRequest: ExtractJwt.fromAuthHeader(),
-    algorithms: ['HS256'],
-  },
-  (payload, done) => {
-    const user = getUser(payload.username);
+// Serialize user in session
+passport.serializeUser(function(user, done) {
+  done(null, user.username);
+});
 
-    if (!user) {
-      return done('Username and password combination is wrong');
-    }
+passport.deserializeUser(function(username, done) {
+  const user = getUser(username);
 
-    delete user.password;
+  done(null, user);
+});
 
-    return done(null, user);
-  }
-));
-
-// Create custom middleware function
+// Create custom middleware functions
 function hasScope(scope) {
   return (req, res, next) => {
     const { scopes } = req.user;
 
     if (!scopes.includes(scope)) {
-      return res.status(403).json({ "message": "You aren't allowed to do that." });
+      req.flash('error', 'The username and password are not valid.');
+      return res.redirect('/');
     }
 
     next();
   };
 }
 
+function isAuthenticated(req, res, next) {
+  if (!req.user) {
+    req.flash('error', 'You must be logged in.');
+    return res.redirect('/');
+  }
+
+  next();
+}
+
+// Create home route
+server.get('/', (req, res) => {
+  if (res.user) {
+    return res.redirect('/dashboard');
+  }
+
+  res.render('index');
+});
+
+server.get('/dashboard',
+  isAuthenticated,
+  (req, res) => {
+    res.render('dashboard');
+  }
+);
+
 // Create auth routes
 const authRoutes = express.Router();
 
 authRoutes.post('/login',
-  passport.authenticate('local', { session: false }),
-  (req, res) => {
-    jwt.sign(req.user, JWT_KEY, {
-      algorithm: 'HS256',
-      expiresIn: '14d',
-      issuer: JWT_ISSUER
-    }, (error, token) => {
-      if (error) return res.status(500).json({ err });
-
-      res.json({ token });
-    });
-  }
+  passport.authenticate('local', {
+    failureRedirect: '/',
+    successRedirect: '/dashboard',
+    failureFlash: true,
+  })
 );
 
 server.use('/auth', authRoutes);
@@ -106,7 +124,11 @@ server.use('/auth', authRoutes);
 // Create API routes
 const apiRoutes = express.Router();
 
-apiRoutes.use(passport.authenticate('jwt', { session: false }));
+apiRoutes.use(passport.authenticate('local'));
+
+apiRoutes.get('/me', (req, res) => {
+  res.json({ user: req.user });
+});
 
 // Get all of a user's exclamations
 apiRoutes.get('/exclamations',
