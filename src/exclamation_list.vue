@@ -29,9 +29,11 @@
 <template>
   <div class="exclamation-list">
     <h1>{{ title }}</h1>
-    <div class="exclamation" v-for='exclamation in exclamations'>
+    <div class="exclamation" v-for='exclamation in exclamations' :key='exclamation.id'>
       <p class="user">{{ exclamation.user }}</p>
       <p class="text">{{ exclamation.text }}</p>
+      <button class="btn btn-primary">Edit</button>
+      <button class="btn btn-danger">Remove</button>
     </div>
   </div>
 </template>

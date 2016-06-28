@@ -158,7 +158,7 @@ apiRoutes.post('/exclamations',
       user: username,
     };
 
-    exclamationData.push(exclamation);
+    exclamationData.unshift(exclamation);
 
     res.status(201).json({ exclamation });
   }
