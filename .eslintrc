@@ -1,9 +1,12 @@
 {
-  "extends": "airbnb/base",
+  "extends": "airbnb-base",
+  "plugins": [
+    "html"
+  ],
   "rules": {
-    "space-before-function-paren": [2, "never"],
-    "new-cap": 0,
-    "arrow-body-style": 0,
-    "comma-dangle": 0
+    "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
+    "space-before-function-paren": ["error", "never"],
+    "func-names": ["error", "never"],
+    "no-new": 0
   }
 }

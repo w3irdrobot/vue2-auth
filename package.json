@@ -7,7 +7,8 @@
     "start": "node server.js",
     "serve": "nodemon server.js",
     "build:js": "browserify src/app.js -t vueify -t babelify -o public/app.bundle.js",
-    "watch:js": "watchify src/app.js -t vueify -t babelify -o public/app.bundle.js"
+    "watch:js": "watchify src/app.js -t vueify -t babelify -p browserify-hmr -o public/app.bundle.js",
+    "dev": "concurrently \"npm run serve\" \"npm run watch:js\""
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
   "homepage": "https://github.com/searsaw/vue2-auth#readme",
   "dependencies": {
     "body-parser": "^1.15.1",
+    "connect-mongo": "^1.2.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "flash": "^1.1.0",
@@ -30,18 +32,24 @@
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pug": "^2.0.0-beta3",
-    "vue": "^2.0.0-alpha.6"
+    "vue": "^2.0.0-alpha.8"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",
+    "babel-plugin-transform-runtime": "^6.9.0",
     "babel-preset-es2015": "^6.9.0",
+    "babel-runtime": "^6.9.2",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
+    "browserify-hmr": "^0.3.1",
+    "concurrently": "^2.1.0",
     "eslint": "^2.11.1",
     "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-plugin-html": "^1.5.1",
     "eslint-plugin-import": "^1.8.1",
     "nodemon": "^1.9.2",
-    "vueify": "^8.5.4",
+    "vue-hot-reload-api": "^2.0.3",
+    "vueify": "^9.1.0",
     "watchify": "^3.7.0"
   }
 }

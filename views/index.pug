@@ -10,16 +10,17 @@ html(lang='en')
       }
   body
     .container-fluid
-      .col-md-4.col-md-offset-4
-        while message = flash.shift()
-          .alert.alert-danger
-            p= message.message
-        h1.text-center Exclamations!
-        form(action='/auth/login' method='POST')
-          .form-group
-            label(for='username') Email Address
-            input.form-control(name='username')
-          .form-group
-            label(for='password') Password
-            input.form-control(name='password' type='password')
-          button.btn.btn-primary(type='submit') Login
+      .row
+        .col-md-4.col-md-offset-4
+          while message = flash.shift()
+            .alert.alert-danger
+              p= message.message
+          h1.text-center Exclamations!
+          form(action='/auth/login' method='POST')
+            .form-group
+              label(for='username') Email Address
+              input.form-control(name='username')
+            .form-group
+              label(for='password') Password
+              input.form-control(name='password' type='password')
+            button.btn.btn-primary(type='submit') Login

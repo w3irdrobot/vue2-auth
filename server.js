@@ -2,6 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const flash = require('flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');;
@@ -35,6 +36,9 @@ server.use(session({
   secret: process.env.SESSION_SECRET || 'awesomecookiesecret',
   resave: false,
   saveUninitialized: false,
+  store: new MongoStore({
+    url: 'mongodb://localhost/vue2-auth',
+  }),
 }));
 server.use(flash());
 server.use(express.static('public'));

@@ -1,12 +1,12 @@
 {
   "users": [
     {
-      "username": "rachel",
+      "username": "rachel@friends.com",
       "password": "green",
       "scopes": ["read", "add", "edit", "delete"]
     },
     {
-      "username": "ross",
+      "username": "ross@friends.com",
       "password": "geller",
       "scopes": ["read"]
     }
