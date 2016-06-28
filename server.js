@@ -5,7 +5,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const flash = require('flash');
 const passport = require('passport');
-const LocalStrategy = require('passport-local');;
+const LocalStrategy = require('passport-local');
 const uuid = require('node-uuid');
 const appData = require('./data.json');
 
@@ -70,6 +70,8 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(username, done) {
   const user = getUser(username);
 
+  delete user.password;
+
   done(null, user);
 });
 
@@ -128,7 +130,7 @@ server.use('/auth', authRoutes);
 // Create API routes
 const apiRoutes = express.Router();
 
-apiRoutes.use(passport.authenticate('local'));
+apiRoutes.use(isAuthenticated);
 
 apiRoutes.get('/me', (req, res) => {
   res.json({ user: req.user });
@@ -138,8 +140,7 @@ apiRoutes.get('/me', (req, res) => {
 apiRoutes.get('/exclamations',
   hasScope('read'),
   (req, res) => {
-    const { username } = req.user;
-    const exclamations = exclamationData.filter(exc => exc.user === username);
+    const exclamations = exclamationData;
 
     res.json({ exclamations });
   }

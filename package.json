@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "serve": "nodemon server.js",
-    "build:js": "browserify src/app.js -t vueify -t babelify -o public/app.bundle.js",
+    "build:js": "browserify src/app.js -t vueify -p [ vueify/plugins/extract-css -o public/styles.bundle.css ] -t babelify -o public/app.bundle.js",
     "watch:js": "watchify src/app.js -t vueify -t babelify -p browserify-hmr -o public/app.bundle.js",
     "dev": "concurrently \"npm run serve\" \"npm run watch:js\""
   },
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/searsaw/vue2-auth#readme",
   "dependencies": {
+    "axios": "^0.12.0",
     "body-parser": "^1.15.1",
     "connect-mongo": "^1.2.1",
     "express": "^4.13.4",
