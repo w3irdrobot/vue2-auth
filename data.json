@@ -3,7 +3,7 @@
     {
       "username": "rachel@friends.com",
       "password": "green",
-      "scopes": ["read", "add", "edit", "delete"]
+      "scopes": ["read", "add", "delete"]
     },
     {
       "username": "ross@friends.com",

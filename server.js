@@ -89,6 +89,22 @@ function hasScope(scope) {
   };
 }
 
+function canDelete(req, res, next) {
+  const { scopes,  username } = req.user;
+  const { id } = req.params;
+  const exclamation = exclamationData.find(exc => exc.id === id);
+
+  if (!exclamation) {
+    return res.sendStatus(404);
+  }
+
+  if (exclamation.user !== username && !scopes.includes('delete')) {
+    return res.status(403).json({ "message": "You can't delete that exclamation." });
+  }
+
+  next();
+}
+
 function isAuthenticated(req, res, next) {
   if (!req.user) {
     req.flash('error', 'You must be logged in.');
@@ -164,37 +180,12 @@ apiRoutes.post('/exclamations',
   }
 );
 
-// Edit an exclamation
-apiRoutes.put('/exclamations/:id',
-  hasScope('edit'),
-  (req, res) => {
-    const { id } = req.params;
-    const { username } = req.user;
-    const { text } = req.body;
-    const exclamation = exclamationData.find(exc => exc.id === id);
-
-    if (!exclamation || exclamation.user !== username) {
-      return res.status(403).json({ "message": "You can't edit that exclamation." });
-    }
-
-    exclamation.text = text;
-
-    res.json({ exclamation });
-  }
-);
-
 // Delete an exclamation
 apiRoutes.delete('/exclamations/:id',
-  hasScope('delete'),
+  canDelete,
   (req, res) => {
     const { id } = req.params;
-    const { username } = req.user;
     const exclamationIndex = exclamationData.findIndex(exc => exc.id === id);
-    const exclamation = exclamationData[exclamationIndex];
-
-    if (!exclamation || exclamation.user !== username) {
-      return res.status(403).json({ "message": "You can't delete that exclamation." });
-    }
 
     exclamationData.splice(exclamationIndex, 1);
 

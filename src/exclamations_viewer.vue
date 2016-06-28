@@ -14,13 +14,13 @@
     </div>
     <div class="row exclamations-viewer">
       <div class="col-md-4">
-        <Exclamation-List title='All Exclamations' :exclamations='exclamations'></Exclamation-List>
+        <Exclamation-List :user='user' :onRemove='onExclamationRemoved' title='All Exclamations' :exclamations='exclamations'></Exclamation-List>
       </div>
       <div class="col-md-4">
-        <Exclamation-List title='Your Exclamations' :exclamations='userExclamations'></Exclamation-List>
+        <Exclamation-List :user='user' :onRemove='onExclamationRemoved' title='Your Exclamations' :exclamations='userExclamations'></Exclamation-List>
       </div>
       <div class="col-md-4">
-        <Exclamation-Search-List :exclamations='exclamations'></Exclamation-Search-List>
+        <Exclamation-Search-List :user='user' :onRemove='onExclamationRemoved' :exclamations='exclamations'></Exclamation-Search-List>
       </div>
     </div>
   </div>
@@ -57,6 +57,12 @@
       },
       canAdd() {
         return this.user.scopes.includes('add');
+      },
+      onExclamationRemoved(id) {
+        axios.delete(`/api/exclamations/${id}`)
+          .then(() => {
+            this.exclamations = this.exclamations.filter(e => e.id !== id);
+          });
       },
     },
     computed: {

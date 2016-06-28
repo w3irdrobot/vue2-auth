@@ -32,8 +32,7 @@
     <div class="exclamation" v-for='exclamation in exclamations' :key='exclamation.id'>
       <p class="user">{{ exclamation.user }}</p>
       <p class="text">{{ exclamation.text }}</p>
-      <button class="btn btn-primary">Edit</button>
-      <button class="btn btn-danger">Remove</button>
+      <button v-on:click='onRemoveClicked(exclamation.id)' v-if='canDelete(exclamation.user)' class="btn btn-danger">Remove</button>
     </div>
   </div>
 </template>
@@ -48,6 +47,20 @@
       exclamations: {
         type: Array,
         default: () => ([]),
+      },
+      onRemove: {
+        default: () => {},
+      },
+      user: {
+        default: {},
+      },
+    },
+    methods: {
+      onRemoveClicked(id) {
+        this.onRemove(id);
+      },
+      canDelete(user) {
+        return this.user.scopes.includes('delete') || this.user.username === user;
       },
     },
   };

@@ -6,7 +6,7 @@
         <input v-model='searchTerm' type="text" class='form-control' placeholder="Search term">
       </div>
     </div>
-    <Exclamation-List title='Filtered Exclamations' :exclamations='exclamationsToShow'></Exclamation-List>
+    <Exclamation-List :user='user' :onRemove='onRemove' title='Filtered Exclamations' :exclamations='exclamationsToShow'></Exclamation-List>
   </div>
 </template>
 
@@ -23,6 +23,12 @@
       exclamations: {
         type: Array,
         default: () => ([]),
+      },
+      onRemove: {
+        default: () => {},
+      },
+      user: {
+        default: {},
       },
     },
     computed: {
