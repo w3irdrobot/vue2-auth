@@ -1,0 +1,29 @@
+.exclamations-viewer,
+.add-form-container {
+  margin-top: 20px;
+}
+.exclamation-list[data-v-2] {
+  background-color: #FAFAFA;
+  border: 2px solid #222;
+  border-radius: 7px;
+}
+
+.exclamation-list h1[data-v-2] {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.exclamation[data-v-2]:nth-child(2) {
+  border-top: 1px solid #222;
+}
+
+.exclamation[data-v-2] {
+  padding: 5px;
+  border-bottom: 1px solid #222;
+}
+
+.user[data-v-2] {
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}

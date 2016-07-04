@@ -4,10 +4,11 @@
   "description": "Authentication using VueJS 2.0, Express, and Passport",
   "main": "index.js",
   "scripts": {
+    "prestart": "npm run build:js",
     "start": "node server.js",
     "serve": "nodemon server.js",
     "build:js": "browserify src/app.js -t vueify -p [ vueify/plugins/extract-css -o public/styles.bundle.css ] -t babelify -o public/app.bundle.js",
-    "watch:js": "watchify src/app.js -t vueify -t babelify -p browserify-hmr -o public/app.bundle.js",
+    "watch:js": "watchify src/app.js -t vueify -t babelify -p browserify-hmr -p [ vueify/plugins/extract-css -o public/styles.bundle.css ] -o public/app.bundle.js",
     "dev": "concurrently \"npm run serve\" \"npm run watch:js\""
   },
   "repository": {
