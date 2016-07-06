@@ -22,6 +22,9 @@
     "url": "https://github.com/searsaw/vue2-auth/issues"
   },
   "homepage": "https://github.com/searsaw/vue2-auth#readme",
+  "engines": {
+    "node": "6.1.0"
+  },
   "dependencies": {
     "axios": "^0.12.0",
     "body-parser": "^1.15.1",
