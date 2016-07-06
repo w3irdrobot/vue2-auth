@@ -29,7 +29,6 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "flash": "^1.1.0",
-    "jsonwebtoken": "^7.0.0",
     "node-uuid": "^1.4.7",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",

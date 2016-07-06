@@ -7,6 +7,7 @@
     "semi": ["error", "always", { "omitLastInOneLineBlock": true }],
     "space-before-function-paren": ["error", "never"],
     "func-names": ["error", "never"],
-    "no-new": 0
+    "no-new": 0,
+    "new-cap": 0
   }
 }

@@ -9,11 +9,6 @@ const LocalStrategy = require('passport-local');
 const uuid = require('node-uuid');
 const appData = require('./data.json');
 
-// Get key used to sign the JWTs
-const JWT_KEY = process.env.JWT_KEY || 'ballersecretkey';
-// Get issuer for JWTs
-const JWT_ISSUER = process.env.JWT_ISSUER || 'awesomeApi.com';
-
 // Create app data (mimics a DB)
 const userData = appData.users;
 const exclamationData = appData.exclamations;
@@ -63,11 +58,11 @@ passport.use(new LocalStrategy(
 ));
 
 // Serialize user in session
-passport.serializeUser(function(user, done) {
+passport.serializeUser((user, done) => {
   done(null, user.username);
 });
 
-passport.deserializeUser(function(username, done) {
+passport.deserializeUser((username, done) => {
   const user = getUser(username);
 
   delete user.password;
@@ -85,12 +80,12 @@ function hasScope(scope) {
       return res.redirect('/');
     }
 
-    next();
+    return next();
   };
 }
 
 function canDelete(req, res, next) {
-  const { scopes,  username } = req.user;
+  const { scopes, username } = req.user;
   const { id } = req.params;
   const exclamation = exclamationData.find(exc => exc.id === id);
 
@@ -99,10 +94,10 @@ function canDelete(req, res, next) {
   }
 
   if (exclamation.user !== username && !scopes.includes('delete')) {
-    return res.status(403).json({ "message": "You can't delete that exclamation." });
+    return res.status(403).json({ message: "You can't delete that exclamation." });
   }
 
-  next();
+  return next();
 }
 
 function isAuthenticated(req, res, next) {
@@ -111,16 +106,16 @@ function isAuthenticated(req, res, next) {
     return res.redirect('/');
   }
 
-  next();
+  return next();
 }
 
 // Create home route
 server.get('/', (req, res) => {
-  if (res.user) {
+  if (req.user) {
     return res.redirect('/dashboard');
   }
 
-  res.render('index');
+  return res.render('index');
 });
 
 server.get('/dashboard',
@@ -170,7 +165,7 @@ apiRoutes.post('/exclamations',
     const { text } = req.body;
     const exclamation = {
       id: uuid.v4(),
-      text: text,
+      text,
       user: username,
     };
 
